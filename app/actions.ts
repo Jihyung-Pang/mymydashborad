@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createPost, deletePost, updatePost, type Category } from "@/lib/posts";
+import { createComment } from "@/lib/comments";
 
 const CATEGORIES: Category[] = ["일기", "단상", "평가"];
 
@@ -37,4 +38,11 @@ export async function deletePostAction(id: string) {
   await deletePost(id);
   revalidatePath("/");
   redirect("/");
+}
+
+export async function createCommentAction(postId: string, formData: FormData) {
+  const content = String(formData.get("content") ?? "").trim();
+  if (!content) return;
+  await createComment(postId, content);
+  revalidatePath(`/${postId}`);
 }
