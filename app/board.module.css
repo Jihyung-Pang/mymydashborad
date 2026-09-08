@@ -266,6 +266,18 @@
   word-break: break-word;
 }
 
+.aiBadge {
+  align-self: flex-start;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
 .commentDate {
   font-family: var(--font-geist-mono), ui-monospace, monospace;
   font-size: 11px;

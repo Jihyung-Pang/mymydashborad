@@ -2,8 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { createPost, deletePost, updatePost, type Category } from "@/lib/posts";
 import { createComment } from "@/lib/comments";
+import { generateAiComment } from "@/lib/ai-comment";
 
 const CATEGORIES: Category[] = ["일기", "단상", "평가"];
 
@@ -22,6 +24,16 @@ export async function createPostAction(formData: FormData) {
   if (!title) return;
   const post = await createPost({ title, category, content });
   revalidatePath("/");
+
+  after(async () => {
+    try {
+      const aiComment = await generateAiComment(post);
+      await createComment(post.id, aiComment, { isAi: true });
+    } catch (err) {
+      console.error("AI comment generation failed", err);
+    }
+  });
+
   redirect(`/${post.id}`);
 }
 

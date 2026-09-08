@@ -43,6 +43,7 @@ export default async function PostPage({
           <ul className={styles.commentList}>
             {comments.map((comment) => (
               <li key={comment.id} className={styles.commentRow}>
+                {comment.isAi && <span className={styles.aiBadge}>AI</span>}
                 <p className={styles.commentContent}>{comment.content}</p>
                 <span className={styles.commentDate}>
                   {formatDateTime(comment.createdAt)}
